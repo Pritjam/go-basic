@@ -409,7 +409,7 @@ func (node *node_t) evaluate() (*Result_t, error) {
 	switch node.nodeType {
 	case FACTOR: // base case, just return a result with
 		if node.tok.tokenType == INT {
-			return &Result_t{ResultType: INTEGER, Ires: node.tok.intVal, Fres: float64(node.tok.intVal)}, nil
+			return &Result_t{ResultType: INTEGER, Ires: node.tok.intVal, Fres: float64(node.tok.intVal)}, nil // set the float value too in case we have to upcast to float
 		} else {
 			return &Result_t{ResultType: FLOATING, Fres: node.tok.floatVal}, nil
 		}
@@ -420,13 +420,13 @@ func (node *node_t) evaluate() (*Result_t, error) {
 		}
 		if node.tok.tokenType == SUB { // negative sign
 			if factorRes.ResultType == INTEGER { // GACK! Any way to make this work for both ints and floats?
-				return &Result_t{ResultType: INTEGER, Ires: -1 * factorRes.Ires, Fres: -1 * float64(factorRes.Ires)}, nil
+				return &Result_t{ResultType: INTEGER, Ires: -1 * factorRes.Ires, Fres: -1 * float64(factorRes.Ires)}, nil // set the float value too in case we have to upcast to float
 			} else {
 				return &Result_t{ResultType: FLOATING, Fres: -1 * factorRes.Fres}, nil
 			}
 		} else if node.tok.tokenType == ADD { // positive sign
 			if factorRes.ResultType == INTEGER { // GACK! Any way to make this work for both ints and floats?
-				return &Result_t{ResultType: INTEGER, Ires: abs(factorRes.Ires), Fres: float64(abs(factorRes.Ires))}, nil
+				return &Result_t{ResultType: INTEGER, Ires: abs(factorRes.Ires), Fres: float64(abs(factorRes.Ires))}, nil // set the float value too in case we have to upcast to float
 			} else {
 				return &Result_t{ResultType: FLOATING, Fres: math.Abs(factorRes.Fres)}, nil
 			}
